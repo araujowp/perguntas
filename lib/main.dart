@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:perguntas/questao.dart';
-import 'package:perguntas/resposta.dart';
+import './questionario.dart';
+import 'package:perguntas/resultado.dart';
 
-void main() =>  runApp(PerguntaApp());
+void main() => runApp(PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var _perguntaSelecionada = 0;
   final _perguntas = const [
     {
       'texto': 'Qual é a sua cor favorita?',
-      'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+      'respostas': [
+        {'texto': 'Preto','nota' : 10},
+        {'texto': 'Vermelho','nota' : 5},
+        {'texto': 'Verde','nota' : 3},
+        {'texto': 'Branco','nota' : 1},
+      ],
     },
     {
       'texto': 'Qual é o seu animal favorito?',
-      'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+      'respostas': [
+        {'texto': 'Coelho','nota' : 10},
+        {'texto': 'Cobra','nota' : 5},
+        {'texto': 'Elefante','nota' : 3},
+        {'texto': 'Leão','nota' : 1},
+      ],
     },
     {
       'texto': 'Qual é o seu instrutor favorito?',
-      'respostas': ['Maria', 'João', 'Leo', 'Pedro'],
+      'respostas': [
+        {'texto': 'Maria','nota' : 10},
+        {'texto': 'João','nota' : 5},
+        {'texto': 'Leo','nota' : 3},
+        {'texto': 'Pedro','nota' : 1},
+      ],
     }
   ];
 
   void _responder() {
-    if(temPerguntaSelecionada) {
+    if (temPerguntaSelecionada) {
       setState(() {
         _perguntaSelecionada++;
       });
@@ -35,21 +50,18 @@ class _PerguntaAppState extends State<PerguntaApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> respostas = temPerguntaSelecionada 
-      ? _perguntas[_perguntaSelecionada]['respostas']
-      : null;
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Perguntas'),
         ),
-        body: temPerguntaSelecionada ? Column(
-          children: <Widget>[
-            Questao(_perguntas[_perguntaSelecionada]['texto']),
-            ...respostas.map((t) => Resposta(t, _responder)).toList(),
-          ],
-        ) : null,
+        body: temPerguntaSelecionada
+            ? Questionario(
+                perguntas: _perguntas,
+                perguntaSelecionada: _perguntaSelecionada,
+                quantoResponder: _responder,
+              )
+            : Resultado(),
       ),
     );
   }
